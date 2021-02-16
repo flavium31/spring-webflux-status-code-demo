@@ -14,8 +14,7 @@ public class StatusCodeWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange,
                              WebFilterChain webFilterChain) {
-
-        log.info("Response code: {}", serverWebExchange.getResponse().getStatusCode().value());
-        return webFilterChain.filter(serverWebExchange);
+        return webFilterChain.filter(serverWebExchange)
+                .doOnTerminate(() -> log.info("Response code: {}", serverWebExchange.getResponse().getStatusCode().value()));
     }
 }
